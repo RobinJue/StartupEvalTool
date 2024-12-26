@@ -1,0 +1,23 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+env/
+venv/
+
+# Ignore data outputs and secrets
+data/*.csv
+data/*.json
+config/settings.env
+
+# Ignore logs
+*.log
+
+# Ignore IDE and OS files
+.vscode/
+*.DS_Store
+
+# Ignore test files
+modules/data_sources/test.py
+access_point/api_test.py
