@@ -4,7 +4,7 @@ from table_generator import start as generate_table_from_json
 # from gsheets.export.export_to_gsheets import export_table_to_gsheets
 
 # File paths
-# json_file_path = "modules/data_sources/temp/unionized_data.json"  # actual JSON file from scraping data
+json_file_path = "modules/data_sources/temp/unionized_data.json"  # actual JSON file from scraping data
 json_file_path = "table/tests/test_json_table.json"  # test JSON file
 
 # Setup logging

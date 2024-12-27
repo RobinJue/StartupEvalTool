@@ -1,25 +1,44 @@
 import os
+import sys
 from dotenv import load_dotenv
-# from modules.gsheets_template import copy_template, update_sheet
-# from modules.fetch_data import fetch_startup_data
-# from modules.process_data import clean_and_estimate
-# from modules.export_results import export_to_csv
-from utils.logger import get_logger
+import logging
+import subprocess
+
+# Step 1
+# Step 2
+# Step 3
+from modules.fetch_data import fetch_startup_data  # Import fetch_startup_data for step 3
+# Step 4
+# Step 5
+# Step 6
+
+# Get the current directory of the script (main.py)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to 'table_main.py' relative to the current directory
+# table_main_path = os.path.join(current_dir, 'modules', 'table_main.py')  # Commented out the relative path
+
+# Run the subprocess with the relative path
+# subprocess.run(['python3', table_main_path], check=True)  # Commented out the subprocess run
+
+# Add the root directory of the project to sys.path (adjusted for project structure)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..'))
+sys.path.insert(0, project_root)  # Insert at the beginning to ensure priority
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
-logger = get_logger("Main")
 
 def main(startup_name):
-    print("main accessed")
+    logger.info("Main script accessed")
+    
     if startup_name == "test":
-        print("launching test")
-        
-    """
-    Main function to process the given startup name.
-    Args:
-        startup_name (str): The name of the startup to process.
-    """
+        logger.info("Launching test mode")
+
     try:
         logger.info(f"Starting processing for startup: {startup_name}")
 
@@ -36,14 +55,14 @@ def main(startup_name):
         # logger.info(f"Template copied. New Sheet ID: {sheet_id}")
 
         # Step 3: Fetch data from external APIs & web search
-        # logger.info("Fetching startup data...")
-        # raw_data = fetch_startup_data(startup_name)
-        # logger.info("Startup data fetched successfully.")
+        logger.info("Step 3: Fetching startup data...")
+        fetch_startup_data(startup_name)
+        logger.info("Startup data fetched successfully.")
 
-        # Step 4: Process data (cleaning, sorting, and estimations)
-        # logger.info("Processing data...")
-        # processed_data = clean_and_estimate(raw_data)
-        # logger.info("Data processed successfully.")
+        # Step 4: Execute table_main.py directly for generating and processing the table
+        # logger.info("Step 4: Executing table_main.py for generating and processing the table...")
+        # generate_and_process_table()  # Calling main() from table_main.py
+        # logger.info("Table processed successfully.")
 
         # Step 5: Update Google Sheets with processed data
         # logger.info("Updating Google Sheets with processed data...")
@@ -56,19 +75,18 @@ def main(startup_name):
         # export_to_csv(processed_data, output_file)
         # logger.info(f"Results exported successfully to {output_file}")
 
-        # logger.info("Process completed successfully!")
-
         logger.info(f"Main script ran successfully for startup: {startup_name}")
 
     except Exception as e:
         logger.error(f"An error occurred while processing {startup_name}: {e}", exc_info=True)
 
 if __name__ == "__main__":
-    import sys
+    # If no command-line argument is provided, default to 'N26'
     if len(sys.argv) < 2:
-        print("Usage: python main.py <startup_name>")
-        sys.exit(1)
-
-    # Read the startup name from command-line arguments
-    startup_name = sys.argv[1]
+        logger.info("No startup name provided. Using 'N26' by default.")
+        startup_name = "N26"
+    else:
+        # Read the startup name from command-line arguments
+        startup_name = sys.argv[1]
+    
     main(startup_name)
