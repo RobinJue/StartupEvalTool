@@ -1,6 +1,12 @@
 import pandas as pd
 from datetime import datetime
 import json
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 
 def load_json_data(json_file_path):
     """
@@ -14,6 +20,7 @@ def load_json_data(json_file_path):
     """
     try:
         with open(json_file_path, "r", encoding="utf-8") as file:
+            logger.info(f"Loaded JSON data from {json_file_path}")
             return json.load(file)
     except Exception as e:
         raise ValueError(f"Error loading JSON data: {e}")
@@ -38,6 +45,7 @@ def find_founding_year(data):
                     founding_years.append(year_data["Year founded"])
         
         if not founding_years:
+            logger.error("No founding year found in the JSON data.")
             raise ValueError("No founding year found in the JSON data.")
         
         # Count the frequency of each founding year
@@ -50,6 +58,7 @@ def find_founding_year(data):
         common_years = [year for year, count in year_counts.items() if count == max_count]
         
         # If there's a tie, return the earliest year
+        logger.info(f"Found most common founding year: {min(common_years)}")
         return min(common_years)
     except Exception as e:
         raise ValueError(f"Error finding founding year: {e}")
@@ -111,6 +120,7 @@ def populate_years(table, start_year):
     # The rest of the columns are initially NaN / None
     # (table was empty but had the correct columns, so we've mirrored that structure)
     
+    logger.info(f"Populated table with years from {start_year} to {years[-1]}")
     return new_table
 
 def create_full_data_dict_sorted_by_year(json_data, start_year):
@@ -136,7 +146,8 @@ def create_full_data_dict_sorted_by_year(json_data, start_year):
             try:
                 year_int = int(year_str)
             except ValueError:
-                continue  # skip if not a valid year number
+                logger.debug(f"No matching row for year {year} in the table, skipping.")
+                continue  # Not found, skip
             
             if year_int in full_data_dict:
                 full_data_dict[year_int].append(details)  # Append the details to the corresponding year
@@ -153,6 +164,7 @@ def create_full_data_dict_sorted_by_year(json_data, start_year):
             )
         )
     
+    logger.info(f"Created full data dictionary for years {start_year} to {current_year + 5}")
     return full_data_dict
 
 def fill_table_with_data(table, full_data_dict):
@@ -194,20 +206,21 @@ def fill_table_with_data(table, full_data_dict):
         for record in records:
             for json_key, df_col in mapping.items():
                 if json_key in record and record[json_key] is not None:
+                    logger.debug(f"Updating {df_col} for year {year} with value: {record[json_key]}")
                     table.at[row_idx, df_col] = record[json_key]
     
     return table
 
 def start(json_file_path):
     """Entry point for table_generator."""
-    print("Loading JSON data...")
+    logger.info("Loading JSON data...")
     try:
         json_data = load_json_data(json_file_path)
     except ValueError as e:
         print(f"Error: {e}")
         return None
 
-    print("Finding founding year...")
+    logger.info("Finding founding year...")
     try:
         founding_year = find_founding_year(json_data)
         print(f"Founding Year: {founding_year}")
@@ -222,4 +235,5 @@ def start(json_file_path):
 
     print("Generated Table with Data:")
     print(table.to_markdown(index=False))
+    logger.info("Table generation complete.")
     return table
