@@ -21,6 +21,11 @@ config/settings.env
 # Ignore test files
 modules/data_sources/test.py
 access_point/api_test.py
+code/table/tests/
 
 # Ignore all files in temp directories
 modules/data_sources/temp/*
+
+# Ignore all visualizations
+structure.pptx
+structure.txt

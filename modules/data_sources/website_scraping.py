@@ -11,7 +11,7 @@ import sys
 # Add the modules directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from modules.chatgpt_txt_data_extraction import process_file  # Import process_file
+from modules.data_sources.chatgpt_txt_data_extraction import process_file  # Import process_file
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
