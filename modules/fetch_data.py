@@ -1,41 +1,39 @@
-from modules.data_sources.angellist import fetch_angellist_data
-from modules.data_sources.crunchbase import fetch_crunchbase_data
-from modules.data_sources.linkedin import fetch_linkedin_data
-from utils.logger import get_logger
+import sys
+import os
 
-logger = get_logger("FetchData")
+# Add the root directory of the project to sys.path (adjusted for project structure)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'code')))
 
-def fetch_startup_data():
+from modules.data_sources.website_scraping import website_scraping_main
+
+def fetch_startup_data(startup_name):
     """
-    Fetches data from AngelList, Crunchbase, and LinkedIn APIs.
-    Returns a combined list of startup data.
+    Fetches data for the specified startup from various sources.
     """
-    logger.info("Starting data fetch from all sources...")
-    combined_data = []
+    print(f"Starting data fetch for {startup_name}...")
 
+    # Fetch data from the website using website_scraping_main function
     try:
-        logger.info("Fetching data from AngelList...")
-        angellist_data = fetch_angellist_data()
-        combined_data.extend(angellist_data)
-        logger.info(f"Retrieved {len(angellist_data)} records from AngelList.")
+        print(f"Fetching website data for startup: {startup_name}...")
+        website_scraping_main(startup_name)
+        print(f"Website data fetched for startup: {startup_name}.")
     except Exception as e:
-        logger.error(f"Failed to fetch data from AngelList: {e}")
+        print(f"Failed to fetch website data for startup {startup_name}: {e}")
+    
+    # Placeholder for fetching data from AngelList
+    # fetch_angellist_data(startup_name)
 
-    try:
-        logger.info("Fetching data from Crunchbase...")
-        crunchbase_data = fetch_crunchbase_data()
-        combined_data.extend(crunchbase_data)
-        logger.info(f"Retrieved {len(crunchbase_data)} records from Crunchbase.")
-    except Exception as e:
-        logger.error(f"Failed to fetch data from Crunchbase: {e}")
+    # Placeholder for fetching data from Crunchbase
+    # fetch_crunchbase_data(startup_name)
 
-    try:
-        logger.info("Fetching data from LinkedIn...")
-        linkedin_data = fetch_linkedin_data()
-        combined_data.extend(linkedin_data)
-        logger.info(f"Retrieved {len(linkedin_data)} records from LinkedIn.")
-    except Exception as e:
-        logger.error(f"Failed to fetch data from LinkedIn: {e}")
+    # Placeholder for fetching data from LinkedIn
+    # fetch_linkedin_data(startup_name)
 
-    logger.info("Data fetching completed.")
-    return combined_data
+    print(f"Data fetch completed for {startup_name}.")
+    # You can return the gathered data if needed for further processing
+    return None  # Placeholder for actual data return
+
+# Example usage
+if __name__ == "__main__":
+    startup_name = "N26"  # Replace with the desired startup name
+    fetch_startup_data(startup_name)
