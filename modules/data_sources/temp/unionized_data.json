@@ -1,0 +1,68 @@
+[
+    {
+        "2022": {
+            "Revenue": 236300000,
+            "Gross Profit": 153800000,
+            "Gross Profit Margin": 65,
+            "Operating Income": -170400000,
+            "Operating Expenses": null,
+            "Operating Margin": null,
+            "Net Loss": 213400000,
+            "Net Income": null,
+            "Free Cash Flow": null,
+            "Customers": 4000000,
+            "Customer Growth": 8,
+            "Year founded": 2013,
+            "Industry": "Digital Banking"
+        },
+        "2023": {
+            "Revenue": 300000000,
+            "Gross Profit": 220000000,
+            "Gross Profit Margin": 70,
+            "Operating Income": -80000000,
+            "Operating Expenses": null,
+            "Operating Margin": null,
+            "Net Loss": 100000000,
+            "Net Income": null,
+            "Free Cash Flow": null,
+            "Customers": null,
+            "Customer Growth": null,
+            "Year founded": null,
+            "Industry": "Digital Banking"
+        }
+    },
+    {
+        "2024": {
+            "Revenue": null,
+            "Gross Profit": null,
+            "Gross Profit Margin": null,
+            "Operating Income": null,
+            "Operating Expenses": null,
+            "Operating Margin": null,
+            "Net Loss": null,
+            "Net Income": null,
+            "Free Cash Flow": null,
+            "Customers": null,
+            "Customer Growth": null,
+            "Year founded": 2013,
+            "Industry": "Financial Services"
+        }
+    },
+    {
+        "2024": {
+            "Revenue": null,
+            "Gross Profit": null,
+            "Gross Profit Margin": null,
+            "Operating Income": null,
+            "Operating Expenses": null,
+            "Operating Margin": null,
+            "Net Loss": null,
+            "Net Income": null,
+            "Free Cash Flow": null,
+            "Customers": 8000000,
+            "Customer Growth": null,
+            "Year founded": null,
+            "Industry": "Banking"
+        }
+    }
+]

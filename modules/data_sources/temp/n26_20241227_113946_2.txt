@@ -1,0 +1,17 @@
+{
+    "2024": {
+        "Revenue": null,
+        "Gross Profit": null,
+        "Gross Profit Margin": null,
+        "Operating Income": null,
+        "Operating Expenses": null,
+        "Operating Margin": null,
+        "Net Loss": null,
+        "Net Income": null,
+        "Free Cash Flow": null,
+        "Customers": null,
+        "Customer Growth": null,
+        "Year founded": 2013,
+        "Industry": "Financial Services"
+    }
+}
