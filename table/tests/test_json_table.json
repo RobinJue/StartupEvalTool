@@ -140,34 +140,4 @@
             "Operating Income": null,
             "Operating Expenses": null,
             "Operating Margin": null,
-            "Net Loss": null,
-            "Net Income": null,
-            "Free Cash Flow": null,
-            "Customers": 1600000,
-            "Customer Growth": null,
-            "Source Date": "null",
-            "Data Source": "https://example.com/health-digital-2024",
-            "Year founded": null,
-            "Industry": "Digital Wellness"
-        }
-    },
-    {
-        "2025": {
-            "Revenue": 300000000,
-            "Gross Profit": 150000000,
-            "Gross Profit Margin": 50,
-            "Operating Income": 50000000,
-            "Operating Expenses": 100000000,
-            "Operating Margin": 15,
-            "Net Loss": null,
-            "Net Income": 35000000,
-            "Free Cash Flow": 30000000,
-            "Customers": 2000000,
-            "Customer Growth": 25,
-            "Source Date": "JULY 1, 2025",
-            "Data Source": "https://example.com/financials-2025",
-            "Year founded": 2015,
-            "Industry": "HealthTech"
-        }
-    }
-]
+            "Net 

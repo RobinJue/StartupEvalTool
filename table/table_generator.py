@@ -1,11 +1,6 @@
 import pandas as pd
 from datetime import datetime
 import json
-import os
-
-# File paths
-# json_file_path = "modules/data_sources/temp/unionized_data.json"  # actual JSON file from scraping data
-json_file_path = "table/tests/test_json_table.json"  # test JSON file
 
 def load_json_data(json_file_path):
     """
@@ -203,34 +198,28 @@ def fill_table_with_data(table, full_data_dict):
     
     return table
 
-if __name__ == "__main__":
-    # Load the JSON data
+def start(json_file_path):
+    """Entry point for table_generator."""
+    print("Loading JSON data...")
     try:
         json_data = load_json_data(json_file_path)
     except ValueError as e:
         print(f"Error: {e}")
-        exit(1)
+        return None
 
-    # Find the founding year
+    print("Finding founding year...")
     try:
         founding_year = find_founding_year(json_data)
         print(f"Founding Year: {founding_year}")
     except ValueError as e:
         print(f"Error: {e}")
-        exit(1)
+        return None
 
-    # 1. Generate an empty "outline" (no 'Yr' column!)
     outline_table = generate_table_outline()
-    
-    # 2. Create a new table with one row per year from founding_year to current
     table = populate_years(outline_table, founding_year)
-    
-    # 3. Create the full data dict, sorted by year + date
     full_data_dict_sorted_by_year = create_full_data_dict_sorted_by_year(json_data, founding_year)
-    
-    # 4. Fill the table with data
     table = fill_table_with_data(table, full_data_dict_sorted_by_year)
-    
-    # 5. Print out the result
+
     print("Generated Table with Data:")
     print(table.to_markdown(index=False))
+    return table
