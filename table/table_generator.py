@@ -9,7 +9,7 @@ json_file_path = "table/tests/test_json_table.json"  # test JSON file
 
 def load_json_data(json_file_path):
     """
-    Loads JSON data from a file and returns it as a list of dictionaries.
+    Loads JSON data from a file and returns it as a dictionary.
     
     Args:
         json_file_path (str): Path to the JSON file.
@@ -113,24 +113,39 @@ def populate_years(table, start_year):
 def create_full_data_dict_sorted_by_year(json_data, start_year):
     """
     Create a dictionary where the keys are years from start_year to the current year,
-    and the values are lists of all dictionary objects from that year in the JSON data.
-    
+    and the values are lists of all dictionary objects from that year in the JSON data,
+    sorted by source date ("null" or no date first, then oldest to newest).
+    The oldest data point comes first to make it easier to override later.
+
     Args:
         json_data (list): The JSON data as a list of dictionaries.
         start_year (int): The first year to include in the dictionary.
-        
+
     Returns:
         dict: The full data dictionary sorted by year.
     """
     current_year = datetime.now().year
     full_data_dict = {year: [] for year in range(start_year, current_year + 1)}  # Initialize dictionary with empty lists
     
+    # Populate the dictionary with data from the JSON
     for record in json_data:
         for year, details in record.items():
             year = int(year)  # Ensure year is treated as an integer
             if year in full_data_dict:
                 full_data_dict[year].append(details)  # Append the details to the corresponding year
-    
+
+    # Sort the arrays for each year
+    for year in full_data_dict:
+        full_data_dict[year] = sorted(
+            full_data_dict[year],
+            key=lambda x: (
+                0 if x.get("Source Date", "").lower() == "null" or not x.get("Source Date") else 1,  # Prioritize "null"
+                datetime.strptime(
+                    x.get("Source Date", "9999-12-31"), "%B %d, %Y"
+                ) if x.get("Source Date") and x.get("Source Date").lower() != "null" else datetime.min  # Handle valid dates
+            )
+        )
+
     return full_data_dict
 
 if __name__ == "__main__":
@@ -161,5 +176,3 @@ if __name__ == "__main__":
     # Display the table and the full data dictionary
     print("Generated Table with Years:")
     print(table.to_markdown(index=False))
-    print("\nFull Data Dictionary Sorted by Year:")
-    print(json.dumps(full_data_dict_sorted_by_year, indent=4))  # Pretty print the dictionary
