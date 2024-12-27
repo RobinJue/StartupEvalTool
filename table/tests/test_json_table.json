@@ -12,6 +12,8 @@
             "Free Cash Flow": -3000000,
             "Customers": 500000,
             "Customer Growth": 50,
+            "Source Date": "JANUARY 15, 2020",
+            "Data Source": "https://example.com/financials-2020",
             "Year founded": 2018,
             "Industry": "HealthTech"
         }
@@ -29,6 +31,8 @@
             "Free Cash Flow": null,
             "Customers": 750000,
             "Customer Growth": 50,
+            "Source Date": "MARCH 20, 2021",
+            "Data Source": "https://example.com/financials-2021",
             "Year founded": null,
             "Industry": "HealthTech"
         }
@@ -46,6 +50,8 @@
             "Free Cash Flow": 8000000,
             "Customers": 1000000,
             "Customer Growth": 33,
+            "Source Date": "APRIL 10, 2022",
+            "Data Source": "https://example.com/financials-2022",
             "Year founded": 2018,
             "Industry": "HealthTech"
         }
@@ -63,6 +69,8 @@
             "Free Cash Flow": null,
             "Customers": 1200000,
             "Customer Growth": 20,
+            "Source Date": "MAY 18, 2023",
+            "Data Source": "https://example.com/financials-2023",
             "Year founded": null,
             "Industry": "HealthTech"
         }
@@ -80,6 +88,8 @@
             "Free Cash Flow": null,
             "Customers": 1300000,
             "Customer Growth": 8,
+            "Source Date": "JUNE 12, 2023",
+            "Data Source": "https://example.com/press-2023",
             "Year founded": 2015,
             "Industry": "HealthTech"
         }
@@ -97,6 +107,8 @@
             "Free Cash Flow": null,
             "Customers": null,
             "Customer Growth": null,
+            "Source Date": "FEBRUARY 3, 2024",
+            "Data Source": "https://example.com/financials-2024",
             "Year founded": 2015,
             "Industry": "HealthTech"
         }
@@ -114,6 +126,8 @@
             "Free Cash Flow": 22000000,
             "Customers": 1500000,
             "Customer Growth": 15,
+            "Source Date": "MARCH 25, 2024",
+            "Data Source": "https://example.com/press-2024",
             "Year founded": null,
             "Industry": "HealthTech"
         }
@@ -131,6 +145,8 @@
             "Free Cash Flow": null,
             "Customers": 1600000,
             "Customer Growth": null,
+            "Source Date": "APRIL 10, 2024",
+            "Data Source": "https://example.com/health-digital-2024",
             "Year founded": null,
             "Industry": "Digital Wellness"
         }
@@ -148,6 +164,8 @@
             "Free Cash Flow": 30000000,
             "Customers": 2000000,
             "Customer Growth": 25,
+            "Source Date": "JULY 1, 2025",
+            "Data Source": "https://example.com/financials-2025",
             "Year founded": 2015,
             "Industry": "HealthTech"
         }
