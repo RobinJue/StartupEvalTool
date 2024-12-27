@@ -35,11 +35,12 @@ def extract_data_from_text(text_content):
     """Extract structured data from the text content using ChatGPT."""
     instructions = (
         "Extract the following structured data from the provided text content:\n"
-        "%year%:{Revenue:, Gross Profit:, Gross Profit Margin:, Operating Income:, Operating Expenses:, Operating Margin:, Net Loss:, Net Income:, Free Cash Flow:, Customers:, Customer Growth:, Year founded:, Industry:\n"
+        "%year%:{Revenue:, Gross Profit:, Gross Profit Margin:, Operating Income:, Operating Expenses:, Operating Margin:, Net Loss:, Net Income:, Free Cash Flow:, Customers:, Customer Growth:, Source Date:, Data Source:, Year founded:, Industry:\n"
         "year is the year of the financial data.\n"
         "Format the output in JSON as previously defined.\n"
+        "Data Source is the URL you find on top. Source Date is the date from when the numbers are from.\n"
         "If no data is found, return Null values for the respective fields. If data is found, always only return numbers.\n"
-        "This is important because we will use this data to preprocess in deterministic algorithms. So do not add any text except numbers or Null values. Only exception is industry."
+        "This is important because we will use this data to preprocess in deterministic algorithms. So do not add any text except numbers or Null values. Only exception is industry, Source Date and Data Source."
     )
     logger.info("Sending data to OpenAI API...")
     response = client.chat.completions.create(

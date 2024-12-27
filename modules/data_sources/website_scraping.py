@@ -143,6 +143,7 @@ def website_scraping_main(startup_name):
                 filename = f"{startup_name.lower().replace(' ', '-')}_{timestamp}_{index}.txt"
                 file_path = os.path.join(TEMP_DIR, filename)
                 with open(file_path, "w", encoding="utf-8") as file:
+                    file.write(f"Source URL: {link}\n\n")  # Add the source URL as metadata
                     file.write(reduced_content)
                 logger.info(f"Pre-processed content saved to {file_path}")
     # Unionize all data from processed files
