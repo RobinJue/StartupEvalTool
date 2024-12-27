@@ -23,4 +23,4 @@ modules/data_sources/test.py
 access_point/api_test.py
 
 # Ignore all files in temp directories
-data_sources/temp/*
+modules/data_sources/temp/*
