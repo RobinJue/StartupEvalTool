@@ -39,4 +39,51 @@ def extract_data_from_text(text_content):
         "year is the year of the financial data.\n"
         "Format the output in JSON as previously defined.\n"
         "If no data is found, return Null values for the respective fields. If data is found, always only return numbers.\n"
-        "This is important because we will use this data to preprocess in deterministic algorithms. So d
+        "This is important because we will use this data to preprocess in deterministic algorithms. So do not add any text except numbers or Null values. Only exception is industry."
+    )
+    logger.info("Sending data to OpenAI API...")
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "system", "content": "You are an expert data extractor."},
+            {"role": "user", "content": f"{instructions}\n\n{text_content}"}
+        ],
+        model="gpt-4o",
+    )
+    logger.info("Received response from OpenAI API.")
+    return response.choices[0].message.content
+
+def process_file(file_path):
+    """
+    Processes a single file: Extracts data and saves it back to the same file in JSON format.
+    Args:
+        file_path (str): Path to the file to process.
+    Returns:
+        dict: Extracted JSON data or None if an error occurs.
+    """
+    try:
+        # Read the file content
+        logger.info(f"Processing file: {file_path}")
+        with open(file_path, "r", encoding="utf-8") as file:
+            text_content = file.read()
+
+        # Extract raw output from ChatGPT
+        raw_output = extract_data_from_text(text_content)
+
+        # Clean the output and convert to JSON
+        cleaned_json = clean_to_json(raw_output)
+        if cleaned_json:
+            json_data = json.loads(cleaned_json)
+            logger.info("Successfully extracted and cleaned JSON data.")
+            
+            # Save the JSON data back to the file
+            with open(file_path, "w", encoding="utf-8") as file:
+                json.dump(json_data, file, indent=4)
+            
+            return json_data
+        else:
+            logger.error("Failed to extract valid JSON data.")
+            return None
+
+    except Exception as e:
+        logger.error(f"An error occurred while processing {file_path}: {e}")
+        return None
