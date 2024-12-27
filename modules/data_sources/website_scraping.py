@@ -4,6 +4,7 @@ import requests
 from googlesearch import search
 from datetime import datetime
 import logging
+from bs4 import BeautifulSoup
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -78,6 +79,46 @@ def scrape_website(url):
         logger.error(f"An error occurred while scraping the website: {e}")
         return None
 
+def remove_consecutive_duplicates(text):
+    """Remove consecutive duplicate lines from text."""
+    lines = text.splitlines()
+    filtered_lines = [lines[0]] if lines else []
+    
+    for line in lines[1:]:
+        if line != filtered_lines[-1]:
+            filtered_lines.append(line)
+    
+    return "\n".join(filtered_lines)
+
+def preprocess_html(html_content):
+    """Pre-process the HTML content to reduce its size and remove duplicates."""
+    try:
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        # Remove scripts and styles
+        for script_or_style in soup(["script", "style"]):
+            script_or_style.extract()
+
+        # Extract text from relevant tags
+        relevant_tags = ["div", "p", "table"]
+        relevant_content = []
+
+        for tag in relevant_tags:
+            for element in soup.find_all(tag):
+                text = element.get_text(strip=True)
+                if text:  # Include only non-empty content
+                    relevant_content.append(text)
+
+        # Join extracted text into a single string
+        reduced_content = "\n".join(relevant_content)
+
+        # Remove consecutive duplicate lines
+        return remove_consecutive_duplicates(reduced_content)
+
+    except Exception as e:
+        logger.error(f"An error occurred while preprocessing HTML: {e}")
+        return None
+
 def save_html_to_file(html_content, filename):
     """Save the HTML content to a file in the temp directory."""
     file_path = os.path.join(TEMP_DIR, filename)
@@ -114,20 +155,19 @@ def website_scraping_main(startup_name):
     for index, link in enumerate(financial_links, start=1):
         html_content = scrape_website(link)
         if html_content:
-            # Use the same timestamp for all files
-            filename = f"{startup_name.lower().replace(' ', '-')}_{timestamp}_{index}.html"
-            save_html_to_file(html_content, filename)
-
-            # 5. Placeholder for sending data to LLM
-            # This is where you would implement the logic to send the scraped data to a language model.
-
-            # 6. Placeholder for saving structured data
-            # This is where you would implement the logic to save the scraped data in a semi-structured format.
-            # They should include: {data_type, data, source, date}
+            # Pre-process the HTML to reduce token size
+            reduced_content = preprocess_html(html_content)
+            if reduced_content:
+                # Use the same timestamp for all files
+                filename = f"{startup_name.lower().replace(' ', '-')}_{timestamp}_{index}.txt"
+                save_html_to_file(reduced_content, filename)
+                logger.info(f"Pre-processed content saved to {filename}")
+            else:
+                logger.warning(f"Pre-processing failed for link: {link}")
 
         else:
             logger.error(f"Failed to scrape the website: {link}")
 
 # Call the main function directly with a specific startup name
 if __name__ == "__main__":
-    website_scraping_main("Scalable Capital")  # Example startup name
+    website_scraping_main("N26")  # Example startup name
