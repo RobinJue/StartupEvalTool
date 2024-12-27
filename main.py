@@ -35,7 +35,7 @@ def main(startup_name):
         # sheet_id = copy_template(template_id)
         # logger.info(f"Template copied. New Sheet ID: {sheet_id}")
 
-        # Step 3: Fetch data from external APIs
+        # Step 3: Fetch data from external APIs & web search
         # logger.info("Fetching startup data...")
         # raw_data = fetch_startup_data(startup_name)
         # logger.info("Startup data fetched successfully.")

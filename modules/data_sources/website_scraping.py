@@ -99,26 +99,27 @@ def preprocess_html(html_content):
         return None
 
 def unionize_json_from_files(temp_dir, output_file):
-    """Unionize data from all processed files and save as a single JSON."""
-    all_data = []  # A list to hold all dictionaries
+    """Process all text files in the temp directory using ChatGPT and unionize the results into a single JSON file."""
+    all_data = []  # A list to hold all extracted dictionaries
     try:
         for filename in os.listdir(temp_dir):
-            if filename.endswith(".txt"):
+            if filename.endswith(".txt"):  # Process only text files
                 file_path = os.path.join(temp_dir, filename)
                 logger.info(f"Processing file: {file_path}")
-                
-                # Process the file to extract a dictionary
+
+                # Extract data from the file using ChatGPT
                 json_data = process_file(file_path)
                 if json_data:
-                    all_data.append(json_data)  # Directly append the dictionary
+                    all_data.append(json_data)  # Append the dictionary to the list
                 else:
                     logger.warning(f"No valid data extracted from {file_path}")
-        
+
         # Save the unionized data as a JSON array
         unionized_file_path = os.path.join(temp_dir, output_file)
         with open(unionized_file_path, "w", encoding="utf-8") as json_file:
             json.dump(all_data, json_file, indent=4)
         logger.info(f"Unionized JSON saved to {unionized_file_path}")
+
     except Exception as e:
         logger.error(f"An error occurred while unionizing data: {e}")
 
