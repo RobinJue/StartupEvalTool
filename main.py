@@ -9,6 +9,7 @@ import subprocess
 # Step 3
 from modules.fetch_data import fetch_startup_data  # Import fetch_startup_data for step 3
 # Step 4
+from table.table_main import main as generate_and_process_table
 # Step 5
 # Step 6
 
@@ -60,9 +61,9 @@ def main(startup_name):
         logger.info("Startup data fetched successfully.")
 
         # Step 4: Execute table_main.py directly for generating and processing the table
-        # logger.info("Step 4: Executing table_main.py for generating and processing the table...")
-        # generate_and_process_table()  # Calling main() from table_main.py
-        # logger.info("Table processed successfully.")
+        logger.info("Step 4: Executing table_main.py for generating and processing the table...")
+        generate_and_process_table()  # Calling main() from table_main.py
+        logger.info("Table processed successfully.")
 
         # Step 5: Update Google Sheets with processed data
         # logger.info("Updating Google Sheets with processed data...")
