@@ -12,7 +12,6 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Fullscreen background with blur effect */
         .background {
             position: fixed;
             top: 0;
@@ -26,7 +25,6 @@
             filter: blur(4px);
         }
 
-        /* Overlay for logger information */
         .logger-block {
             position: absolute;
             top: 20%;
@@ -40,7 +38,6 @@
             overflow-y: auto;
         }
 
-        /* Container for the input and button */
         .input-container {
             position: absolute;
             top: 5%;
@@ -52,7 +49,6 @@
             gap: 10px;
         }
 
-        /* Input field styling */
         .input-container input {
             width: 70%;
             padding: 10px;
@@ -61,7 +57,6 @@
             border-radius: 5px;
         }
 
-        /* Button styling */
         .input-container button {
             padding: 10px 20px;
             font-size: 16px;
@@ -78,38 +73,41 @@
     </style>
 </head>
 <body>
-    <!-- Background image -->
     <div class="background"></div>
 
-    <!-- Input field and button -->
     <div class="input-container">
         <input type="text" id="startup-name" placeholder="Enter Startup Name">
         <button id="submit-button">Search Startup</button>
     </div>
 
-    <!-- Logger information block -->
     <div class="logger-block" id="logger">
-        <p>...</p>
+        <p></p>
     </div>
 
     <script>
-        // JavaScript for handling button click
-        document.getElementById('submit-button').addEventListener('click', () => {
-            const startupName = document.getElementById('startup-name').value.trim();
-            const logger = document.getElementById('logger');
-            
-            if (!startupName) {
-                alert('Please enter a startup name.');
-                return;
-            }
+    document.getElementById('submit-button').addEventListener('click', () => {
+        const startupName = document.getElementById('startup-name').value.trim();
+        const logger = document.getElementById('logger');
 
-            logger.innerHTML = `<p>Processing startup: <strong>${startupName}</strong></p>`;
-            
-            // Simulate logger output for testing purposes
-            setTimeout(() => {
-                logger.innerHTML += `<p>Startup data fetched successfully!</p>`;
-            }, 2000);
-        });
+        if (!startupName) {
+            alert('Please enter a startup name.');
+            return;
+        }
+
+        logger.innerHTML = `<p>Processing startup: <strong>${startupName}</strong></p>`;
+
+        // Establish SSE connection for live log updates
+        const eventSource = new EventSource(`/process?startup_name=${startupName}`);
+
+        eventSource.onmessage = (event) => {
+            logger.innerHTML += `<p>${event.data}</p>`;
+        };
+
+        eventSource.onerror = () => {
+            logger.innerHTML += '<p>Connection closed.</p>';
+            eventSource.close();
+        };
+    });
     </script>
 </body>
 </html>

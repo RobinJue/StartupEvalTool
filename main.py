@@ -2,7 +2,12 @@ import os
 import sys
 from dotenv import load_dotenv
 import logging
-import subprocess
+
+# Apply global logger configuration
+from utils.logger_config import configure_logger
+configure_logger()
+
+
 
 # Step 1
 # Step 2
@@ -80,6 +85,7 @@ def main(startup_name):
 
     except Exception as e:
         logger.error(f"An error occurred while processing {startup_name}: {e}", exc_info=True)
+    logger.info("End of main.py reached.")
 
 if __name__ == "__main__":
     # If no command-line argument is provided, default to 'N26'

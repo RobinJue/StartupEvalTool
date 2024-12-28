@@ -1,62 +1,7 @@
 [
     {
-        "2024": {
-            "Revenue": "Null",
-            "Gross Profit": "Null",
-            "Gross Profit Margin": "Null",
-            "Operating Income": "Null",
-            "Operating Expenses": "Null",
-            "Operating Margin": "Null",
-            "Net Loss": "Null",
-            "Net Income": "Null",
-            "Free Cash Flow": "Null",
-            "Customers": "Null",
-            "Customer Growth": "Null",
-            "Source Date": "NOVEMBER 19, 2024",
-            "Data Source": "https://n26.com/en-eu/press",
-            "Year founded": "2013",
-            "Industry": "Banking"
-        }
-    },
-    {
-        "2023": {
-            "Revenue": 300000000,
-            "Gross Profit": 220000000,
-            "Gross Profit Margin": 70,
-            "Operating Income": -80000000,
-            "Operating Expenses": null,
-            "Operating Margin": null,
-            "Net Loss": 100000000,
-            "Net Income": null,
-            "Free Cash Flow": null,
-            "Customers": null,
-            "Customer Growth": null,
-            "Source Date": "NOVEMBER 29, 2023",
-            "Data Source": "https://n26.com/en-eu/press/press-release/n26-group-shares-profitability-expectations-and-announces-upcoming-trading-product",
-            "Year founded": 2013,
-            "Industry": "Digital Banking"
-        },
         "2022": {
-            "Revenue": 236300000,
-            "Gross Profit": 153800000,
-            "Gross Profit Margin": 65,
-            "Operating Income": -170400000,
-            "Operating Expenses": null,
-            "Operating Margin": null,
-            "Net Loss": 213400000,
-            "Net Income": null,
-            "Free Cash Flow": null,
-            "Customers": 4000000,
-            "Customer Growth": 8,
-            "Source Date": "NOVEMBER 29, 2023",
-            "Data Source": "https://n26.com/en-eu/press/press-release/n26-group-shares-profitability-expectations-and-announces-upcoming-trading-product",
-            "Year founded": 2013,
-            "Industry": "Digital Banking"
-        }
-    },
-    {
-        "2024": {
-            "Revenue": null,
+            "Revenue": 415000000,
             "Gross Profit": null,
             "Gross Profit Margin": null,
             "Operating Income": null,
@@ -65,12 +10,31 @@
             "Net Loss": null,
             "Net Income": null,
             "Free Cash Flow": null,
-            "Customers": 8000000,
+            "Customers": 18000,
             "Customer Growth": null,
-            "Source Date": "2024",
-            "Data Source": "https://n26.com/en-eu",
+            "Source Date": "July 19, 2023",
+            "Data Source": "https://corporate.enpal.com/pressemitteilungen/enpal-grows-by-277-percent-in-2022-and-reaches-415-million-euros-in-revenue",
+            "Year founded": 2017,
+            "Industry": "Rooftop PV Systems"
+        }
+    },
+    {
+        "2023": {
+            "Revenue": 900000000,
+            "Gross Profit": null,
+            "Gross Profit Margin": null,
+            "Operating Income": null,
+            "Operating Expenses": null,
+            "Operating Margin": null,
+            "Net Loss": null,
+            "Net Income": null,
+            "Free Cash Flow": null,
+            "Customers": 30000,
+            "Customer Growth": null,
+            "Source Date": "15.01.2024",
+            "Data Source": "https://corporate.enpal.com/pressemitteilungen/enpal-doubles-revenue-in-financial-year-2023",
             "Year founded": null,
-            "Industry": "Banking"
+            "Industry": "Renewable Energy"
         }
     }
 ]
