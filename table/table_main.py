@@ -38,18 +38,4 @@ def main():
         # table_with_forecast = forecast_missing_data(table)
         logger.info("Forecasting completed successfully.")
     except Exception as e:
-        logger.error(f"Failed to forecast missing data: {e}")
-        return
-
-    # Step 3: Export the table to Google Sheets
-    logger.info("Step 3: Exporting table to Google Sheets...")
-    try:
-        # Uncomment the following line if the export function is implemented
-        # export_table_to_gsheets(table_with_forecast)
-        logger.info("Table exported to Google Sheets successfully.")
-    except Exception as e:
-        logger.error(f"Failed to export table to Google Sheets: {e}")
-        return
-
-if __name__ == "__main__":
-    main()
+        logger.error(f"Fai
