@@ -2,6 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 import logging
+from datetime import datetime
 
 # Apply global logger configuration
 from utils.logger_config import configure_logger
@@ -11,8 +12,9 @@ configure_logger()
 
 # Step 1
 # Step 2
+from gsheets.gsheets_create import copy_google_sheets_file
 # Step 3
-from modules.fetch_data import fetch_startup_data  # Import fetch_startup_data for step 3
+from modules.fetch_data import fetch_startup_data
 # Step 4
 from table.table_main import main as generate_table
 # Step 5
@@ -48,22 +50,31 @@ def main(startup_name):
     try:
         logger.info(f"Starting processing for startup: {startup_name}")
 
-        # Step 1: Load configuration from environment variables
-        # logger.info("Loading configuration...")
-        # template_id = os.getenv("SHEET_TEMPLATE_ID")
-        # output_dir = "data/"
-        # if not os.path.exists(output_dir):
-        #     os.makedirs(output_dir)
+        if True:
+            # Step 1: Load configuration from environment variables
+            logger.info("Step 1: Loading configuration...")
+            template_id = os.getenv("SHEET_TEMPLATE_ID")  # Ensure this variable is defined in your .env
+            if not template_id:
+                logger.error("SHEET_TEMPLATE_ID not found in environment variables.")
+                return
+            
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            new_sheet_name = f"{current_date}_{startup_name}_Financial_Model"
 
         # Step 2: Copy Google Sheets template
-        # logger.info("Copying Google Sheets template...")
-        # sheet_id = copy_template(template_id)
-        # logger.info(f"Template copied. New Sheet ID: {sheet_id}")
+        logger.info("Step 2: Copying Google Sheets template...")
+        try:
+            sheet_url = copy_google_sheets_file(template_id, new_sheet_name)
+            logger.info(f"Template copied successfully. New Sheet URL: {sheet_url}")
+        except Exception as e:
+            logger.error(f"Failed to copy Google Sheets template: {e}")
+            return
 
-        # Step 3: Fetch data from external APIs & web search
-        logger.info("Step 3: Fetching startup data...")
-        fetch_startup_data(startup_name)
-        logger.info("Startup data fetched successfully.")
+        if False:
+            # Step 3: Fetch data from external APIs & web search
+            logger.info("Step 3: Fetching startup data...")
+            fetch_startup_data(startup_name)
+            logger.info("Startup data fetched successfully.")
 
         # Step 4: Execute table_main.py directly for generating and processing the table
         logger.info("Step 4: Executing table_main.py for generating and processing the table...")
