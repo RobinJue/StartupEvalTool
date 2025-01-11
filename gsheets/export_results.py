@@ -55,7 +55,7 @@ def export_data_to_gsheets(sheet_url, data_frame):
         service.spreadsheets().values().update(
             spreadsheetId=sheet_id,
             range=range_name,
-            valueInputOption="RAW",
+            valueInputOption="USER_ENTERED",
             body=body
         ).execute()
 
