@@ -1,8 +1,10 @@
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import logging
 from datetime import datetime
 from googleapiclient.discovery import build
-from google_authenticate import authenticate_google  # Import from the new module
+from gsheets.google_authenticate import authenticate_google
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
