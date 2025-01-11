@@ -9,8 +9,6 @@ from datetime import datetime
 from utils.logger_config import configure_logger
 configure_logger()
 
-
-
 # Step 1
 # Step 2
 from gsheets.gsheets_create import copy_google_sheets_file
@@ -19,6 +17,7 @@ from modules.fetch_data import fetch_startup_data
 # Step 4
 from table.table_main import main as generate_table
 # Step 5
+from gsheets.export_results import export_data_to_gsheets
 # Step 6
 
 # Get the current directory of the script (main.py)
@@ -79,13 +78,14 @@ def main(startup_name):
 
         # Step 4: Execute table_main.py directly for generating and processing the table
         logger.info("Step 4: Executing table_main.py for generating and processing the table...")
-        generate_table()  # Calling main() from table_main.py
+        table = generate_table()
         logger.info("Table processed successfully.")
 
         # Step 5: Update Google Sheets with processed data
-        # logger.info("Updating Google Sheets with processed data...")
-        # update_sheet(sheet_id, processed_data)
-        # logger.info("Google Sheets updated successfully.")
+        if True:
+            logger.info("Updating Google Sheets with processed data...")
+            export_data_to_gsheets(sheet_url, table)
+            logger.info("Google Sheets updated successfully.")
 
         # Step 6: Export results to CSV
         # logger.info("Exporting results to CSV...")

@@ -45,7 +45,7 @@ def main(startup_name):
     logger.info("Starting Google Sheets file copy process...")
 
     # Define the original Google Sheets file ID
-    original_file_id = "1Q0leol-d9l51WqeKbSbOHJDLf_CjhmCcdNSf9lPIEnA"  # Replace with your actual template ID
+    original_file_id = "1Q0leol-d9l51WqeKbSbOHJDLf_CjhmCcdNSf9lPIEnA"
 
     # Generate the new file name
     current_date = datetime.now().strftime("%Y-%m-%d")
