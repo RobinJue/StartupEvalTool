@@ -30,7 +30,7 @@ def export_data_to_gsheets(sheet_url, data_frame):
 
     # Define the tab name and starting cell
     tab_name = "Income_Statements"
-    start_cell = "B2"
+    start_cell = "B3"  # Start in B3 instead of B2
 
     creds = authenticate_google()
     service = build('sheets', 'v4', credentials=creds)
@@ -38,10 +38,20 @@ def export_data_to_gsheets(sheet_url, data_frame):
     try:
         # Sanitize the DataFrame
         sanitized_data_frame = data_frame.fillna('')  # Replace NaN with an empty string
-        sanitized_data_frame = sanitized_data_frame.astype(str)  # Ensure all data is string type
 
-        # Convert DataFrame to a list of lists
-        data = [sanitized_data_frame.columns.tolist()] + sanitized_data_frame.values.tolist()
+        # Format specific columns as percentages
+        if 'GP Marg' in sanitized_data_frame.columns:
+            sanitized_data_frame['GP Marg'] = sanitized_data_frame['GP Marg'].apply(
+                lambda x: f"{x}%" if x != '' else x)
+        if 'Op Marg' in sanitized_data_frame.columns:
+            sanitized_data_frame['Op Marg'] = sanitized_data_frame['Op Marg'].apply(
+                lambda x: f"{x}%" if x != '' else x)
+        if 'Cust Gr' in sanitized_data_frame.columns:
+            sanitized_data_frame['Cust Gr'] = sanitized_data_frame['Cust Gr'].apply(
+                lambda x: f"{x}%" if x != '' else x)
+
+        # Convert DataFrame to a list of lists excluding the header row
+        data = sanitized_data_frame.values.tolist()
         logger.info(f"Prepared data for export. Rows to upload: {len(data)}")
 
         # Define the range in the target Google Sheets
