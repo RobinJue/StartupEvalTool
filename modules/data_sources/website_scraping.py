@@ -1,7 +1,7 @@
 import os
 import time
 import requests
-from googlesearch import search
+from googleapiclient.discovery import build
 from datetime import datetime
 import logging
 from bs4 import BeautifulSoup
@@ -11,7 +11,7 @@ import sys
 # Add the modules directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from modules.data_sources.chatgpt_txt_data_extraction import process_file  # Import process_file
+from modules.data_sources.chatgpt_txt_data_extraction import process_file
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -23,6 +23,40 @@ TEMP_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data_source
 # Ensure the temp directory exists
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+# Path to the credentials file
+CREDENTIALS_FILE = os.path.join("credentials", "client_secret.json")
+
+def authenticate_google_with_credentials():
+    """
+    Authenticate using the service account credentials file.
+    Returns an authenticated service object.
+    """
+    try:
+        credentials = service_account.Credentials.from_service_account_file(
+            CREDENTIALS_FILE, scopes=["https://www.googleapis.com/auth/cloud-platform"]
+        )
+        return credentials
+    except Exception as e:
+        logger.error(f"Failed to authenticate using service account credentials: {e}")
+        return None
+
+def google_search_with_credentials(query):
+    """
+    Perform a Google search using the Google API credentials.
+    """
+    credentials = authenticate_google_with_credentials()
+    if not credentials:
+        logger.error("Authentication failed. Cannot perform the search.")
+        return None
+
+    try:
+        service = build("customsearch", "v1", credentials=credentials)
+        response = service.cse().list(q=query, cx=os.getenv("GOOGLE_CSE_ID"), num=1).execute()
+        return response.get('items', [])[0].get('link') if response.get('items') else None
+    except Exception as e:
+        logger.error(f"An error occurred while performing Google search: {e}")
+        return None
+    
 def delete_temp_files():
     """Delete all files in the temporary directory."""
     try:
@@ -35,26 +69,49 @@ def delete_temp_files():
         logger.error(f"An error occurred while deleting temp files: {e}")
 
 def google_search(query):
-    """Perform a Google search and return the first result."""
-    start_time = time.time()  # Track start time for timeout detection
+    """
+    Perform a Google search using the official Google Custom Search JSON API.
+    This function returns the first search result link.
+    
+    Make sure to set the following environment variables:
+    - GOOGLE_API_KEY: Your Google API key
+    - GOOGLE_CSE_ID: Your Custom Search Engine ID
+    
+    Example:
+        export GOOGLE_API_KEY='your_api_key'
+        export GOOGLE_CSE_ID='your_custom_search_engine_id'
+    """
+    start_time = time.time()
+    api_key = os.getenv("GOOGLE_API_KEY")
+    cse_id = os.getenv("GOOGLE_CSE_ID")
+
+    if not api_key or not cse_id:
+        logger.error("No valid Google API key or Custom Search Engine (CSE) ID found.")
+        return None
+
     try:
-        results = list(search(query))
+        service = build("customsearch", "v1", developerKey=api_key)
+
+        # num=1 will limit results to only the first item
+        response = service.cse().list(q=query, cx=cse_id, num=1).execute()
+
+        # Check if it took too long
         if time.time() - start_time > 45:
             raise TimeoutError("Google search took too long. Exceeded 45 seconds.")
-        return results[0] if results else None
-    except requests.exceptions.HTTPError as e:
-        if e.response.status_code == 429:
-            logger.warning("Received 429 error. Waiting for 5 seconds before retrying...")
-            time.sleep(5)
-            return google_search(query)
-        logger.error(f"An error occurred: {e}")
-        return None
-    except TimeoutError as e:
-        logger.error(f"Google search timeout: {e}")
+
+        items = response.get('items', [])
+        if not items:
+            return None
+
+        # Return the first link
+        return items[0]['link']
+
+    except Exception as e:
+        logger.error(f"An error occurred while performing Google search: {e}")
         return None
 
 def find_financial_links(startup_url):
-    """Find financial-related links for the given startup URL."""
+    """Find financial-related links for the given startup URL using official Google Custom Search API."""
     search_words = [
         "financial statements",
         "annual report",
@@ -86,6 +143,7 @@ def preprocess_html(html_content):
         soup = BeautifulSoup(html_content, "html.parser")
         for script_or_style in soup(["script", "style"]):
             script_or_style.extract()
+
         relevant_tags = ["div", "p", "table"]
         relevant_content = []
         for tag in relevant_tags:
@@ -93,6 +151,8 @@ def preprocess_html(html_content):
                 text = element.get_text(strip=True)
                 if text:
                     relevant_content.append(text)
+
+        # Remove duplicate lines
         return "\n".join(dict.fromkeys("\n".join(relevant_content).splitlines()))
     except Exception as e:
         logger.error(f"An error occurred while preprocessing HTML: {e}")
@@ -127,13 +187,17 @@ def website_scraping_main(startup_name):
     """Main function to find the startup URL, financial links, and scrape the website."""
     logger.info("Starting Web Scraping")
     delete_temp_files()
+
     startup_url = google_search(startup_name)
     if not startup_url:
         logger.error("No valid startup URL found.")
         return
+
     logger.info(f"Startup URL found: {startup_url}")
+
     financial_links = find_financial_links(startup_url)
     logger.info(f"Financial links found: {financial_links}")
+
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     for index, link in enumerate(financial_links, start=1):
         html_content = scrape_website(link)
@@ -146,6 +210,7 @@ def website_scraping_main(startup_name):
                     file.write(f"Source URL: {link}\n\n")  # Add the source URL as metadata
                     file.write(reduced_content)
                 logger.info(f"Pre-processed content saved to {file_path}")
+
     # Unionize all data from processed files
     unionize_json_from_files(TEMP_DIR, "unionized_data.json")
 

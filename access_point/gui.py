@@ -47,7 +47,7 @@ project_root = Path(__file__).resolve().parents[1]
 
 # Create the main Tkinter window
 root = tk.Tk()
-root.title("Crunchbase API Viewer")
+root.title("Startup Evaluation API Viewer")
 
 # Ensure the GUI appears in the foreground
 root.deiconify()  # Make the window visible if it starts minimized

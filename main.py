@@ -70,8 +70,9 @@ def main(startup_name):
             logger.error(f"Failed to copy Google Sheets template: {e}")
             return
 
-        if False:
-            # Step 3: Fetch data from external APIs & web search
+        # Step 3: Fetch data from external APIs & web search
+        if True:
+            
             logger.info("Step 3: Fetching startup data...")
             fetch_startup_data(startup_name)
             logger.info("Startup data fetched successfully.")
