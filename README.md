@@ -45,8 +45,7 @@ project/
 ├── modules/         # Core functionality
 ├── table/          # Financial modeling logic
 ├── utils/          # Helper functions
-├── main.py         # Pipeline orchestrator
-└── docs/           # Documentation assets
+└── main.py         # Pipeline orchestrator
 ```
 
 ## 📜 License
